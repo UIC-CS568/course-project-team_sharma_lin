@@ -101,8 +101,7 @@ class FeatureExtraction:
                    for p in string.punctuation:
                        substrings[1] = substrings[1].replace(p, '')
                        substrings[2] = substrings[2].replace(p, '')
-                   features[substrings[1] + "." + re.sub('\n', '', substrings[2])] = len(substrings[3])
-            print(features)            
+                   features[substrings[1] + "." + re.sub('\n', '', substrings[2])] = len(substrings[3])            
             self.output.append(features)
         return self.output
 
@@ -110,6 +109,8 @@ class FeatureExtraction:
 output_file = open("features.json", 'a', encoding="utf-8")
 base_path = "C:\CS568\Projects\Fingerprint"
 result = []
+all_features = {}
+total=0
 for sub_dir in os.listdir(base_path):
     if not sub_dir.startswith('.'):
         for file in os.listdir(base_path + "\\" + sub_dir):
@@ -119,8 +120,18 @@ for sub_dir in os.listdir(base_path):
                     feature = FeatureExtraction(base_path + "\\"+sub_dir+'\\'+file)
                     result.extend(feature.collect_feature())
             except Exception as e:
-                print(file)
                 print('error--', e)
                 continue
+for dic in result:
+    all_features.update(dic)
+    total+= len(dic)
+feature_information = {}
+feature_information['total_scripts'] = len(result)
+feature_information['total_features'] = len(all_features)
+feature_information['unique_features'] = total
+output_file.write(json.dumps([feature_information]) + '\n')
+print("Total number of scripts : {}".format(len(result)))
+print("Total features recorded : {}".format(len(all_features)))
+print("Total number of unique features : {}".format(total))
 output_file.write(json.dumps(result) + '\n')
 
