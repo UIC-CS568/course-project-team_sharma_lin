@@ -111,13 +111,13 @@ base_path = "C:\CS568\Projects\Fingerprint"
 result = []
 all_features = {}
 total=0
-for sub_dir in os.listdir(base_path):
+for sub_dir in os.listdir('logs'):
     if not sub_dir.startswith('.'):
-        for file in os.listdir(base_path + "\\" + sub_dir):
+        for file in os.listdir('logs/' + sub_dir):
             try:
                 if not file.startswith('.'):
-                    print(base_path + "\\"+sub_dir+'\\'+file)
-                    feature = FeatureExtraction(base_path + "\\"+sub_dir+'\\'+file)
+                    print('logs/'+sub_dir+'/'+file)
+                    feature = FeatureExtraction('logs/'+sub_dir+'/'+file)
                     result.extend(feature.collect_feature())
             except Exception as e:
                 print('error--', e)
@@ -127,11 +127,11 @@ for dic in result:
     total+= len(dic)
 feature_information = {}
 feature_information['total_scripts'] = len(result)
-feature_information['total_features'] = len(all_features)
-feature_information['unique_features'] = total
+feature_information['unique_features'] = len(all_features)
+feature_information['total_features'] = total
 output_file.write(json.dumps([feature_information]) + '\n')
 print("Total number of scripts : {}".format(len(result)))
-print("Total features recorded : {}".format(len(all_features)))
-print("Total number of unique features : {}".format(total))
+print("Total features recorded : {}".format(total))
+print("Total number of unique features : {}".format(len(all_features)))
 output_file.write(json.dumps(result) + '\n')
 
