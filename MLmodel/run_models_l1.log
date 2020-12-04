@@ -1,0 +1,3 @@
+labels shape:  (391349,)
+feat_mat shape:  (391349, 1000181)
+Fitting 5 folds for each of 2 candidates, totalling 10 fits
